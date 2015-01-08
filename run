@@ -1,0 +1,6 @@
+#!/bin/sh
+export LUA_PATH='/opt/mihini/lua/?.lua;/opt/mihini/lua/?/init.lua;./?.lua;./?/init.lua'
+export LUA_CPATH='/opt/mihini/lua/?.so'
+
+lua main.lua
+
