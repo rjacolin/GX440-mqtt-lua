@@ -28,6 +28,7 @@ local log    = require 'log'
 local ASSET_NAME        = "machine"
 local MQTT_DATA_PATH    = "00000000B6AF4A9D/messages/json"
 local MQTT_COMMAND_PATH = "00000000B6AF4A9D/tasks/json"
+local MQTT_ACK_PATH     = "00000000B6AF4A9D/acks/json"
 local MQTT_BROKER       = "eu.m2mop.net"
 local MQTT_PORT         = 1883
 
@@ -120,10 +121,19 @@ local function process_modbus ()
 	mqtt_client:publish(MQTT_DATA_PATH, payload.."}")
 end
 
+local function ack(ticketId)
+	local payload=""
+	payload = '[{"uid": "'..ticketId..'", "status" : "OK"}]'
+	-- payload = '[{"uid": "'..ticketId..'", "status" : "KO", "message" : "'..msg..'"}]'
+	log(LOG_NAME, "INFO", "Ack %s", payload)
+	mqtt_client:publish(MQTT_ACK_PATH, payload)
+end
+
 local function process_mqtt(topic, val)
 	local data = utils.split(topic, "/")[4]
 	log(LOG_NAME, "INFO", "Receive mqtt %s : %i", data, val)
 	modbus_client:writeMultipleRegisters(1, modbus_address[data], string.pack("h", val))
+	--ack(ticketId)
 end
 -- ---
 -- Log configuration
