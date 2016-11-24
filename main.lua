@@ -161,7 +161,7 @@ local function main()
 	mqtt_client = mqtt.client.create(MQTT_BROKER, MQTT_PORT, process_mqtt)
 	log(LOG_NAME, "INFO", "MQTT Client - OK")
 	mqtt_client:connect(LOG_NAME, nil, nil, nil, nil, "00000000B6AF4A9D", "toto")
-	mqtt_client:subscribe({MQTT_COMMAND_PATH.."#"})
+	mqtt_client:subscribe({MQTT_COMMAND_PATH})
 
 	log(LOG_NAME, "INFO", "Init done")
 
